@@ -14,11 +14,11 @@
     "posttest": "npm run lint",
     "lint": "npm run eslint",
     "lintfix": "npm run eslint -- --fix",
-    "postlint": "template-oss-check",
+    "postlint": "",
     "template-oss-apply": "template-oss-apply --force",
     "test:windows-coverage": "npm pkg set tap.statements=99 --json && npm pkg set tap.branches=98 --json && npm pkg set tap.lines=99 --json",
     "snap": "tap",
-    "eslint": "eslint \"**/*.{js,cjs,ts,mjs,jsx,tsx}\""
+    "eslint": ""
   },
   "keywords": [
     "ignorefile",

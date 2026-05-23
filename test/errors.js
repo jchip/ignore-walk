@@ -1,5 +1,7 @@
 'use strict'
 const t = require('tap')
+const fs = require('fs')
+const path = require('path')
 const walk = require('..')
 const Walker = walk.Walker
 const WalkerSync = walk.WalkerSync
@@ -54,6 +56,27 @@ t.test('readdir error', t => {
   })
 
   t.end()
+})
+
+t.test('synchronous throw in readdir callback is emitted as error', t => {
+  const dir = path.resolve(__dirname, 'fixtures/empty-throw')
+  fs.mkdirSync(dir, { recursive: true })
+  t.teardown(() => fs.rmSync(dir, { recursive: true, force: true }))
+
+  const boom = new Error('boom from done listener')
+  const w = new Walker({ path: dir })
+  let threw = false
+  w.on('done', () => {
+    if (!threw) {
+      threw = true
+      throw boom
+    }
+  })
+  w.on('error', er => {
+    t.equal(er, boom)
+    t.end()
+  })
+  w.start()
 })
 
 t.test('readFile error', t => {
